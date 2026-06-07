@@ -1,11 +1,12 @@
 import logging
 import httpx
+import os
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
 
-TOKEN = "8787661226:AAHm-lgdRthuzeXxusc8ffwZiB0OUZhHzmc"
-GEMINI_KEY = "AQ.Ab8RN6ImMepNwUJd1dE4-b_JIZdY7vvR2b_51VyMrM8Qg2PtxA"
-AMAZON_TAG = "alhamzistore-21"
+TOKEN = os.environ.get("TELEGRAM_TOKEN")
+GEMINI_KEY = os.environ.get("GEMINI_KEY")
+AMAZON_TAG = os.environ.get("AMAZON_TAG")
 
 logging.basicConfig(level=logging.INFO)
 
@@ -19,12 +20,17 @@ async def ask_gemini(query: str) -> str:
 3. رابط البحث: https://amazon.sa/s?k={query.replace(' ', '+')}&tag={AMAZON_TAG}
 كن مختصراً وودودا."""
     
-    async with httpx.AsyncClient() as client:
-        response = await client.post(url, json={
-            "contents": [{"parts": [{"text": prompt}]}]
-        }, timeout=30)
-        data = response.json()
-        return data["candidates"][0]["content"]["parts"][0]["text"]
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.post(url, json={
+                "contents": [{"parts": [{"text": prompt}]}]
+            }, timeout=30)
+            logging.info(f"Gemini status: {response.status_code}")
+            data = response.json()
+            return data["candidates"][0]["content"]["parts"][0]["text"]
+    except Exception as e:
+        logging.error(f"Gemini error: {e}")
+        return f"❌ خطأ: {str(e)}"
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
