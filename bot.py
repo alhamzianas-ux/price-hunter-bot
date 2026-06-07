@@ -4,7 +4,7 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
 
 TOKEN = "8787661226:AAHm-lgdRthuzeXxusc8ffwZiB0OUZhHzmc"
-GEMINI_KEY = "AIzaSyAQ.Ab8RN6LvoLGEXBekBz-rYw-tG5qietyS0Eg99WbvjPZs9VwwmQ"
+GEMINI_KEY = "AIzaSyAb8RN6LvoLGEXBekBz-rYw-tG5qietyS0Eg99WbvjPZs9VwwmQ"
 AMAZON_TAG = "alhamzistore-21"
 
 genai.configure(api_key=GEMINI_KEY)
@@ -30,7 +30,7 @@ async def search(update: Update, context: ContextTypes.DEFAULT_TYPE):
 2. وصف بسيط للمنتج
 3. رابط البحث: https://amazon.sa/s?k={query.replace(' ', '+')}&tag={AMAZON_TAG}
 
-كن مختصراً وودوداً."""
+كن مختصراً وودودا."""
 
     response = model.generate_content(prompt)
     await update.message.reply_text(response.text)
