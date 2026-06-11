@@ -20,7 +20,7 @@ async def ask_ai(query: str) -> str:
                    "Content-Type": "application/json"
                },
                json={
-                   "model": "mistralai/mistral-7b-instruct:free",
+                   "model": "google/gemma-3-4b-it:free",
                    "messages": [
                        {
                            "role": "user",
@@ -30,7 +30,7 @@ async def ask_ai(query: str) -> str:
 1. اقتراح أفضل منتج مناسب
 2. وصف بسيط للمنتج
 3. رابط البحث: https://amazon.sa/s?k={query.replace(' ', '+')}&tag={AMAZON_TAG}
-كن مختصراً وودودا."""
+كن مختصراً وودوداً."""
                        }
                    ]
                },
